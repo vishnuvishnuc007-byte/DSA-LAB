@@ -903,20 +903,24 @@ export default function LabsPage() {
               <div className="p-4 bg-primary-green/5 border-b border-border-color">
                 <h2 className="font-serif font-bold text-primary-green text-sm">Topics</h2>
                 <p className="text-xs text-text-dark/50 mt-1">{completedTopics.length}/{topics.length} completed</p>
-                <div className="mt-2 h-1.5 bg-border-color rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-primary-green rounded-full transition-all duration-500"
-                    style={{ width: `${(completedTopics.length / topics.length) * 100}%` }}
+                <div className="mt-2 h-1.5 bg-border-color rounded-full overflow-hidden relative">
+                  <motion.div
+                    className="h-full bg-primary-green rounded-full relative"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(completedTopics.length / topics.length) * 100}%` }}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   />
                 </div>
               </div>
               <div className="divide-y divide-border-color">
                 {topics.map((t, i) => (
-                  <button
+                  <motion.button
                     key={t.id}
                     onClick={() => { setSelectedTopic(i); setActiveTab('concept') }}
-                    className={`w-full text-left px-4 py-3 flex items-center gap-3 transition-colors text-sm ${
-                      selectedTopic === i ? 'bg-mint/20 text-primary-green' : 'hover:bg-bg text-text-dark/70'
+                    whileHover={{ x: 3 }}
+                    whileTap={{ scale: 0.99 }}
+                    className={`w-full text-left px-4 py-3 flex items-center gap-3 transition-colors text-sm cursor-pointer ${
+                      selectedTopic === i ? 'bg-mint/25 text-primary-green font-semibold' : 'hover:bg-bg text-text-dark/70'
                     }`}
                   >
                     <span className="text-lg flex-shrink-0">{t.icon}</span>
@@ -924,7 +928,7 @@ export default function LabsPage() {
                     {completedTopics.includes(t.id) && (
                       <CheckCircle2 size={14} className="text-secondary-green flex-shrink-0" />
                     )}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             </div>
@@ -1054,21 +1058,25 @@ export default function LabsPage() {
 
               {/* Navigation */}
               <div className="flex justify-between items-center">
-                <button
+                <motion.button
                   onClick={() => setSelectedTopic(p => Math.max(0, p - 1))}
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
                   disabled={selectedTopic === 0}
-                  className="flex items-center gap-2 text-sm font-medium text-primary-green disabled:opacity-30 hover:text-green-mid transition-colors px-4 py-2 rounded-full border border-border-color"
+                  className="flex items-center gap-2 text-sm font-medium text-primary-green disabled:opacity-30 hover:text-green-mid transition-colors px-4 py-2 rounded-full border border-border-color cursor-pointer"
                 >
                   <ChevronLeft size={16} /> Previous
-                </button>
+                </motion.button>
                 <span className="text-xs text-text-dark/40">{selectedTopic + 1} / {topics.length}</span>
-                <button
+                <motion.button
                   onClick={() => setSelectedTopic(p => Math.min(topics.length - 1, p + 1))}
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
                   disabled={selectedTopic === topics.length - 1}
-                  className="flex items-center gap-2 text-sm font-medium text-primary-green disabled:opacity-30 hover:text-green-mid transition-colors px-4 py-2 rounded-full border border-border-color"
+                  className="flex items-center gap-2 text-sm font-medium text-primary-green disabled:opacity-30 hover:text-green-mid transition-colors px-4 py-2 rounded-full border border-border-color cursor-pointer"
                 >
                   Next <ChevronRight size={16} />
-                </button>
+                </motion.button>
               </div>
             </motion.div>
           </div>

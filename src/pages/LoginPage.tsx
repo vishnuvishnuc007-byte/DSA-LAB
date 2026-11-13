@@ -242,9 +242,11 @@ export default function LoginPage() {
             </AnimatePresence>
 
             {/* Submit Button */}
-            <button
+            <motion.button
               type="submit"
               disabled={loading}
+              whileHover={{ scale: 1.015, y: -1 }}
+              whileTap={{ scale: 0.985 }}
               className="w-full py-3 bg-[#063D2E] hover:bg-[#0B513B] text-white rounded-lg text-sm font-semibold tracking-wide transition-all shadow-md hover:shadow-lg disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
             >
               {loading ? (
@@ -255,7 +257,7 @@ export default function LoginPage() {
                   <ChevronRight size={16} />
                 </>
               )}
-            </button>
+            </motion.button>
           </form>
 
           {/* One-Click Demo Credentials */}

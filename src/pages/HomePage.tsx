@@ -19,6 +19,7 @@ import {
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import SilverGlossText from '../components/SilverGlossText'
+import HeroAmbientParticles from '../components/3d/HeroAmbientParticles'
 
 const stats = [
   { icon: Code2, label: 'Interactive Coding' },
@@ -154,6 +155,9 @@ export default function HomePage() {
           <div className="absolute right-[8%] top-[16%] w-[420px] h-[320px] bg-[#A8E6CF]/22 blur-[120px] rounded-full" />
         </motion.div>
 
+        {/* Subtle Interactive 3D Ambient Dust Field (Three.js / React Three Fiber) */}
+        <HeroAmbientParticles />
+
         {/* Content Container */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-auto">
           <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[580px] lg:min-h-[640px]">
@@ -165,7 +169,7 @@ export default function HomePage() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             >
-              {/* Interactive 3D Perspective Wrapper with Mouse Parallax Tilt */}
+              {/* Interactive 3D Perspective Wrapper with Mouse Parallax Tilt & Gentle Floating Motion */}
               <motion.div
                 className="relative w-full h-full flex items-center justify-center"
                 style={{
@@ -174,6 +178,8 @@ export default function HomePage() {
                   rotateX,
                   transformStyle: 'preserve-3d',
                 }}
+                animate={{ y: [-5, 5, -5] }}
+                transition={{ duration: 7, ease: 'easeInOut', repeat: Infinity }}
               >
                 {/* Edge-feathered container sitting directly over the 3D floor pedestal */}
                 <div
@@ -290,9 +296,11 @@ export default function HomePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.75 }}
               >
-                <button
+                <motion.button
                   onClick={() => navigate('/labs')}
-                  className="group relative inline-flex items-center gap-4 bg-gradient-to-r from-[#063D2E] via-[#0B513B] to-[#063D2E] text-white px-8 sm:px-10 py-4 sm:py-4.5 rounded-full font-serif font-bold text-base sm:text-lg tracking-wide transition-all duration-400 cursor-pointer overflow-hidden shadow-[0_12px_32px_-4px_rgba(6,61,46,0.38)] hover:shadow-[0_18px_42px_-4px_rgba(6,61,46,0.5),0_0_28px_rgba(168,230,207,0.4)] hover:-translate-y-1 active:translate-y-0"
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group relative inline-flex items-center gap-4 bg-gradient-to-r from-[#063D2E] via-[#0B513B] to-[#063D2E] text-white px-8 sm:px-10 py-4 sm:py-4.5 rounded-full font-serif font-bold text-base sm:text-lg tracking-wide transition-all duration-400 cursor-pointer overflow-hidden shadow-[0_12px_32px_-4px_rgba(6,61,46,0.38)] hover:shadow-[0_18px_42px_-4px_rgba(6,61,46,0.5),0_0_28px_rgba(168,230,207,0.4)]"
                 >
                   <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
                   <span className="absolute inset-0 rounded-full border border-[#A8E6CF]/30 pointer-events-none" />
@@ -300,7 +308,7 @@ export default function HomePage() {
                   <span className="relative z-10 w-8 h-8 rounded-full bg-[#0B513B]/70 border border-[#A8E6CF]/50 flex items-center justify-center text-[#A8E6CF] group-hover:bg-[#A8E6CF] group-hover:text-[#063D2E] transition-all duration-300 shadow-sm">
                     <ArrowRight size={17} className="group-hover:translate-x-0.5 transition-transform duration-300" />
                   </span>
-                </button>
+                </motion.button>
               </motion.div>
             </motion.div>
           </div>
@@ -373,13 +381,15 @@ export default function HomePage() {
 
                 {/* Learn More Button */}
                 <div>
-                  <button
+                  <motion.button
                     onClick={() => navigate('/labs')}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#063D2E] hover:bg-[#0B513B] text-white text-xs font-semibold tracking-wide transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#063D2E] hover:bg-[#0B513B] text-white text-xs font-semibold tracking-wide transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer"
                   >
                     <span>Learn More</span>
                     <ArrowRight size={14} className="text-[#A8E6CF]" />
-                  </button>
+                  </motion.button>
                 </div>
               </div>
 
@@ -444,13 +454,15 @@ export default function HomePage() {
 
                 {/* View Syllabus Button */}
                 <div>
-                  <button
+                  <motion.button
                     onClick={() => navigate('/syllabus')}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#063D2E] hover:bg-[#0B513B] text-white text-xs font-semibold tracking-wide transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#063D2E] hover:bg-[#0B513B] text-white text-xs font-semibold tracking-wide transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer"
                   >
                     <span>View All Objectives</span>
                     <BookOpen size={14} className="text-[#A8E6CF]" />
-                  </button>
+                  </motion.button>
                 </div>
               </div>
 
@@ -559,13 +571,15 @@ export default function HomePage() {
               </div>
 
               {/* Action Button */}
-              <button
+              <motion.button
                 onClick={() => navigate('/login?role=student')}
-                className="w-full py-4 rounded-xl bg-[#063D2E] hover:bg-[#0B513B] text-white font-serif font-bold text-base tracking-wide transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-3 cursor-pointer mt-4"
+                whileHover={{ scale: 1.015, y: -2 }}
+                whileTap={{ scale: 0.985 }}
+                className="w-full py-4 rounded-xl bg-[#063D2E] hover:bg-[#0B513B] text-white font-serif font-bold text-base tracking-wide transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center gap-3 cursor-pointer mt-4"
               >
                 <span>Login as Student</span>
                 <ArrowRight size={18} className="text-[#A8E6CF]" />
-              </button>
+              </motion.button>
             </motion.div>
 
             {/* CARD 2: STAFF LOGIN */}
@@ -631,13 +645,15 @@ export default function HomePage() {
               </div>
 
               {/* Action Button */}
-              <button
+              <motion.button
                 onClick={() => navigate('/login?role=staff')}
-                className="w-full py-4 rounded-xl bg-[#063D2E] hover:bg-[#0B513B] text-white font-serif font-bold text-base tracking-wide transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-3 cursor-pointer mt-4"
+                whileHover={{ scale: 1.015, y: -2 }}
+                whileTap={{ scale: 0.985 }}
+                className="w-full py-4 rounded-xl bg-[#063D2E] hover:bg-[#0B513B] text-white font-serif font-bold text-base tracking-wide transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center gap-3 cursor-pointer mt-4"
               >
                 <span>Login as Staff</span>
                 <ArrowRight size={18} className="text-[#A8E6CF]" />
-              </button>
+              </motion.button>
             </motion.div>
           </div>
         </div>

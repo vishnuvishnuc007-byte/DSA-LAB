@@ -323,35 +323,48 @@ export default function SyllabusPage() {
           {/* RIGHT SIDE: Open Textbook on Glowing Pedestal (Image 1) */}
           <div className="lg:col-span-8 relative flex flex-col items-center">
 
-            {/* Floating Tech Icons surrounding Open Book (from Image 1) */}
-            <div className="absolute -top-4 right-8 w-11 h-11 rounded-xl bg-[#0F261C] border border-[#B8E8D0]/40 flex items-center justify-center text-[#B8E8D0] shadow-lg animate-float">
+            {/* Floating Tech Icons surrounding Open Book (from Image 1) with Smooth Physics Float */}
+            <motion.div
+              className="absolute -top-4 right-8 w-11 h-11 rounded-xl bg-[#0F261C] border border-[#B8E8D0]/40 flex items-center justify-center text-[#B8E8D0] shadow-lg"
+              animate={{ y: [-4, 5, -4], rotate: [-2, 2, -2] }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            >
               <Code2 size={20} />
-            </div>
+            </motion.div>
 
-            <div className="absolute top-28 -right-3 w-11 h-11 rounded-xl bg-[#0F261C] border border-[#B8E8D0]/40 flex items-center justify-center text-[#B8E8D0] shadow-lg animate-float" style={{ animationDelay: '1.5s' }}>
+            <motion.div
+              className="absolute top-28 -right-3 w-11 h-11 rounded-xl bg-[#0F261C] border border-[#B8E8D0]/40 flex items-center justify-center text-[#B8E8D0] shadow-lg"
+              animate={{ y: [4, -5, 4], rotate: [2, -2, 2] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+            >
               <Network size={20} />
-            </div>
+            </motion.div>
 
-            <div className="absolute bottom-16 -left-4 w-12 h-12 rounded-xl bg-[#0F261C] border border-[#B8E8D0]/40 flex items-center justify-center text-[#B8E8D0] shadow-lg animate-float" style={{ animationDelay: '0.8s' }}>
+            <motion.div
+              className="absolute bottom-16 -left-4 w-12 h-12 rounded-xl bg-[#0F261C] border border-[#B8E8D0]/40 flex items-center justify-center text-[#B8E8D0] shadow-lg"
+              animate={{ y: [-5, 4, -5], rotate: [-1, 2, -1] }}
+              transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+            >
               <Database size={22} />
-            </div>
+            </motion.div>
 
             {/* OPEN BOOK CONTAINER with Realistic Physical Hardcover & Two Pages */}
-            <div className="relative w-full max-w-3xl rounded-3xl p-3 sm:p-5 bg-gradient-to-b from-[#0F2D20] to-[#0A1F16] shadow-2xl border border-[#769A84]/40">
+            <div className="relative w-full max-w-3xl rounded-3xl p-3 sm:p-5 bg-gradient-to-b from-[#0F2D20] to-[#0A1F16] shadow-2xl border border-[#769A84]/40" style={{ perspective: 1200 }}>
 
               {/* Book Spine Center Shadow & Curvature */}
               <div className="relative bg-[#F4EBDD] rounded-2xl overflow-hidden shadow-inner border border-[#D4C5A9]">
                 <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#CBB99B]/70 min-h-[480px]">
 
                   {/* Left Page */}
-                  <div className="p-6 sm:p-7 bg-[#F7F2E7]/80 relative">
+                  <div className="p-6 sm:p-7 bg-[#F7F2E7]/80 relative" style={{ perspective: 800 }}>
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={`left-${currentPageIndex}`}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 10 }}
-                        transition={{ duration: 0.3 }}
+                        initial={{ opacity: 0, rotateY: 10, x: -8 }}
+                        animate={{ opacity: 1, rotateY: 0, x: 0 }}
+                        exit={{ opacity: 0, rotateY: -10, x: 8 }}
+                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                        style={{ transformOrigin: 'right center' }}
                       >
                         {currentPage.left}
                       </motion.div>
@@ -364,14 +377,15 @@ export default function SyllabusPage() {
                   </div>
 
                   {/* Right Page */}
-                  <div className="p-6 sm:p-7 bg-[#F4EBDD] relative">
+                  <div className="p-6 sm:p-7 bg-[#F4EBDD] relative" style={{ perspective: 800 }}>
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={`right-${currentPageIndex}`}
-                        initial={{ opacity: 0, x: 10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -10 }}
-                        transition={{ duration: 0.3 }}
+                        initial={{ opacity: 0, rotateY: -10, x: 8 }}
+                        animate={{ opacity: 1, rotateY: 0, x: 0 }}
+                        exit={{ opacity: 0, rotateY: 10, x: -8 }}
+                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                        style={{ transformOrigin: 'left center' }}
                       >
                         {currentPage.right}
                       </motion.div>
@@ -395,8 +409,10 @@ export default function SyllabusPage() {
 
               {/* PEDESTAL LIGHT BASE UNDER THE BOOK (matching Image 1) */}
               <div className="relative -mt-1 mx-auto w-4/5 h-8 flex items-center justify-center">
-                <div
-                  className="w-full h-3 rounded-full bg-[#B8E8D0] blur-sm opacity-70"
+                <motion.div
+                  className="w-full h-3 rounded-full bg-[#B8E8D0] blur-sm"
+                  animate={{ opacity: [0.65, 0.95, 0.65], scale: [0.98, 1.02, 0.98] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                   style={{ boxShadow: '0 0 25px #B8E8D0, 0 0 50px rgba(184, 232, 208, 0.5)' }}
                 />
                 <div className="absolute inset-0 border border-[#B8E8D0]/60 rounded-full bg-gradient-to-r from-transparent via-[#123D2C] to-transparent h-4" />
@@ -405,33 +421,37 @@ export default function SyllabusPage() {
 
             {/* Page Flipping Navigation Controls */}
             <div className="flex items-center gap-6 mt-6">
-              <button
+              <motion.button
                 onClick={() => setCurrentPageIndex(p => Math.max(0, p - 1))}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 disabled={currentPageIndex === 0}
-                className="flex items-center gap-2 text-xs font-semibold text-[#123D2C] bg-white border border-[#D9E1D9] hover:border-[#123D2C] px-5 py-2.5 rounded-full disabled:opacity-30 disabled:pointer-events-none transition-all shadow-sm"
+                className="flex items-center gap-2 text-xs font-semibold text-[#123D2C] bg-white border border-[#D9E1D9] hover:border-[#123D2C] px-5 py-2.5 rounded-full disabled:opacity-30 disabled:pointer-events-none transition-all shadow-sm cursor-pointer"
               >
                 <ChevronLeft size={16} /> Previous
-              </button>
+              </motion.button>
 
               <div className="flex gap-2">
                 {syllabusPages.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => setCurrentPageIndex(i)}
-                    className={`w-2.5 h-2.5 rounded-full transition-all ${
+                    className={`w-2.5 h-2.5 rounded-full transition-all cursor-pointer ${
                       i === currentPageIndex ? 'bg-[#123D2C] scale-125' : 'bg-[#769A84]/40 hover:bg-[#769A84]'
                     }`}
                   />
                 ))}
               </div>
 
-              <button
+              <motion.button
                 onClick={() => setCurrentPageIndex(p => Math.min(syllabusPages.length - 1, p + 1))}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 disabled={currentPageIndex === syllabusPages.length - 1}
-                className="flex items-center gap-2 text-xs font-semibold text-[#123D2C] bg-white border border-[#D9E1D9] hover:border-[#123D2C] px-5 py-2.5 rounded-full disabled:opacity-30 disabled:pointer-events-none transition-all shadow-sm"
+                className="flex items-center gap-2 text-xs font-semibold text-[#123D2C] bg-white border border-[#D9E1D9] hover:border-[#123D2C] px-5 py-2.5 rounded-full disabled:opacity-30 disabled:pointer-events-none transition-all shadow-sm cursor-pointer"
               >
                 Next <ChevronRight size={16} />
-              </button>
+              </motion.button>
             </div>
           </div>
         </div>

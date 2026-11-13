@@ -1,6 +1,7 @@
 import { Component, Suspense, type ReactNode } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import SmoothScroll from './components/SmoothScroll'
 import HomePage from './pages/HomePage'
 import SyllabusPage from './pages/SyllabusPage'
 import LabsPage from './pages/LabsPage'
@@ -81,20 +82,22 @@ export default function App() {
     <ErrorBoundary>
       <AuthProvider>
         <Router>
-          <div className="min-h-screen bg-[#F8F7F2]">
-            <Navbar />
-            <Suspense fallback={<LoadingFallback />}>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/syllabus" element={<SyllabusPage />} />
-                <Route path="/labs" element={<LabsPage />} />
-                <Route path="/resources" element={<ResourcesPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="*" element={<HomePage />} />
-              </Routes>
-            </Suspense>
-          </div>
+          <SmoothScroll>
+            <div className="min-h-screen bg-[#F8F7F2]">
+              <Navbar />
+              <Suspense fallback={<LoadingFallback />}>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/syllabus" element={<SyllabusPage />} />
+                  <Route path="/labs" element={<LabsPage />} />
+                  <Route path="/resources" element={<ResourcesPage />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="*" element={<HomePage />} />
+                </Routes>
+              </Suspense>
+            </div>
+          </SmoothScroll>
         </Router>
       </AuthProvider>
     </ErrorBoundary>
