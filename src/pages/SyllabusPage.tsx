@@ -1,461 +1,468 @@
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, ArrowRight, BookOpen, Database, Code2, Network } from 'lucide-react'
+import React, { useRef, useEffect } from 'react'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import {
+  ArrowRight,
+  CheckCircle2,
+  Terminal,
+  Code2,
+  Sparkles,
+  Layers,
+  Cpu,
+  Zap,
+  Target,
+  BookOpen
+} from 'lucide-react'
+import { useAuth } from '../contexts/AuthContext'
+import { EXP_3D_ICONS } from '../assets/experiments'
 
-// Syllabus pages content matching Image 1
-const syllabusPages = [
+interface Experiment {
+  id: string
+  number: string
+  title: string
+  shortDesc: string
+  topics: string[]
+  icon: typeof Terminal
+}
+
+const experiments: Experiment[] = [
   {
-    pageNumber: 1,
-    left: (
-      <div className="space-y-4">
-        {/* Header */}
-        <div className="text-center pb-2 border-b border-[#D4C5A9]">
-          <div className="flex items-center justify-center gap-2 mb-1">
-            <div className="w-5 h-5 rounded-md bg-[#123D2C] flex items-center justify-center">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B8E8D0" strokeWidth="2">
-                <circle cx="12" cy="12" r="8" />
-                <path d="M12 4v16M4 12h16" />
-              </svg>
-            </div>
-            <span className="font-serif font-black text-sm tracking-wide text-[#123D2C]">DSA LAB</span>
-          </div>
-          <span className="text-[10px] italic font-serif text-[#769A84] block -mt-0.5">Course</span>
-          <h2 className="font-serif text-2xl font-black text-[#123D2C] tracking-tight">Syllabus</h2>
-        </div>
-
-        {/* Course Overview Badge */}
-        <div className="space-y-1.5">
-          <div className="inline-flex items-center gap-1.5 bg-[#123D2C] text-[#B8E8D0] text-[10px] font-semibold px-2.5 py-0.5 rounded-full">
-            <BookOpen size={10} />
-            <span>Course Overview</span>
-          </div>
-          <p className="text-[10.5px] leading-relaxed text-[#171917]/85">
-            Learn the core concepts of Data Structures and Algorithms, and build strong problem-solving skills with hands-on practice, from basic to advanced topics.
-          </p>
-        </div>
-
-        {/* Syllabus Details Header */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-1 text-[11px] font-bold text-[#123D2C]">
-            <BookOpen size={12} className="text-[#769A84]" />
-            <span>Syllabus Details</span>
-          </div>
-
-          {/* 1. Course Objectives */}
-          <div>
-            <h4 className="font-serif text-[11px] font-bold text-[#123D2C] mb-1">1. Course Objectives:</h4>
-            <ul className="text-[10px] leading-relaxed text-[#171917]/80 space-y-1 pl-3 list-disc marker:text-[#769A84]">
-              <li>To teach the students to write data structure programs in C.</li>
-              <li>To implement the various data structures as Abstract Data types.</li>
-              <li>To demonstrate the systematic way of solving problems using linear and non - linear data structures.</li>
-              <li>To demonstrate the sorting, searching algorithms.</li>
-            </ul>
-          </div>
-
-          {/* 2. List of Experiments: Simple C */}
-          <div>
-            <h4 className="font-serif text-[11px] font-bold text-[#123D2C] mb-1">2. List of Experiments</h4>
-            <div className="pl-2">
-              <span className="text-[10px] font-semibold text-[#123D2C] block">1. Simple C Programs</span>
-              <ul className="text-[9.5px] text-[#171917]/75 space-y-0.5 pl-3 list-disc marker:text-[#769A84]">
-                <li>Programs using recursion</li>
-                <li>Programs using structures</li>
-                <li>Programs using pointers</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    ),
-    right: (
-      <div className="space-y-3">
-        {/* Experiments 3 to 9 */}
-        <div className="text-[10px] leading-relaxed text-[#171917]/85 space-y-1.5">
-          <div className="flex items-start gap-1.5">
-            <span className="font-bold text-[#123D2C]">3.</span>
-            <span>Linked List Implementation of List ADT</span>
-          </div>
-
-          <div>
-            <div className="flex items-start gap-1.5">
-              <span className="font-bold text-[#123D2C]">4.</span>
-              <span>Implementation of stack using:</span>
-            </div>
-            <ul className="pl-6 text-[9.5px] text-[#171917]/75 list-disc marker:text-[#769A84]">
-              <li>Arrays</li>
-              <li>Linked List</li>
-            </ul>
-          </div>
-
-          <div className="flex items-start gap-1.5">
-            <span className="font-bold text-[#123D2C]">5.</span>
-            <span>Checking Balanced Parentheses using Array implementation of stack</span>
-          </div>
-
-          <div>
-            <div className="flex items-start gap-1.5">
-              <span className="font-bold text-[#123D2C]">6.</span>
-              <span>Implementation of queue using:</span>
-            </div>
-            <ul className="pl-6 text-[9.5px] text-[#171917]/75 list-disc marker:text-[#769A84]">
-              <li>Arrays</li>
-              <li>Linked List</li>
-            </ul>
-          </div>
-
-          <div className="flex items-start gap-1.5">
-            <span className="font-bold text-[#123D2C]">7.</span>
-            <span>Binary Search Trees – implementation</span>
-          </div>
-
-          <div>
-            <div className="flex items-start gap-1.5">
-              <span className="font-bold text-[#123D2C]">8.</span>
-              <span>Implementation of minimum spanning using:</span>
-            </div>
-            <ul className="pl-6 text-[9.5px] text-[#171917]/75 list-disc marker:text-[#769A84]">
-              <li>Kruskal algorithm</li>
-              <li>Prims algorithm</li>
-            </ul>
-          </div>
-
-          <div>
-            <div className="flex items-start gap-1.5">
-              <span className="font-bold text-[#123D2C]">9.</span>
-              <span>Program to sort set of elements using:</span>
-            </div>
-            <ul className="pl-6 text-[9.5px] text-[#171917]/75 list-disc marker:text-[#769A84]">
-              <li>Insertion sort</li>
-              <li>Merge sort</li>
-              <li>Quick sort</li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Course Outcomes Badge & List */}
-        <div className="pt-1 border-t border-[#D4C5A9]/70 space-y-1">
-          <div className="inline-flex items-center gap-1.5 bg-[#123D2C] text-[#B8E8D0] text-[9.5px] font-semibold px-2 py-0.5 rounded-full">
-            <span>🏆 Course Outcomes</span>
-          </div>
-          <p className="text-[8.5px] italic text-[#171917]/70">
-            After the successful completion of this course, the student will be able to:
-          </p>
-          <ul className="text-[8.5px] leading-tight text-[#171917]/80 space-y-0.5 pl-3 list-disc marker:text-[#769A84]">
-            <li>Apply knowledge of linear and non-linear data structures for applications. (CO1)</li>
-            <li>Implement DSA algorithms for complex engineering problems. (CO2)</li>
-            <li>Analyze algorithms to find optimal solutions. (CO3)</li>
-            <li>Evaluate and integrate multiple algorithms for efficiency. (CO4, CO5)</li>
-            <li>Work in teams and demonstrate solutions through presentation. (CO6)</li>
-          </ul>
-        </div>
-
-        {/* Requirements */}
-        <div className="pt-1 border-t border-[#D4C5A9]/70">
-          <span className="text-[9px] font-bold text-[#123D2C] uppercase tracking-wider block">
-            Hardware and Software Requirements
-          </span>
-          <p className="text-[8.5px] text-[#171917]/70">
-            • Computer required: 30 Nos. &nbsp;|&nbsp; • RAM: 1GB, HDD: 80GB &nbsp;|&nbsp; • GCC Compiler
-          </p>
-        </div>
-      </div>
-    ),
+    id: 'exp-01',
+    number: 'EXPERIMENT 01',
+    title: 'SIMPLE C PROGRAMS',
+    shortDesc: 'Foundations of structured programming in C with memory address references and call-stack execution.',
+    topics: [
+      'Programs using recursion.',
+      'Programs using structures.',
+      'Programs using pointers.',
+    ],
+    icon: Code2,
   },
   {
-    pageNumber: 2,
-    left: (
-      <div className="space-y-4">
-        <div className="text-center pb-2 border-b border-[#D4C5A9]">
-          <span className="text-[10px] italic font-serif text-[#769A84] block">Detailed Modules</span>
-          <h2 className="font-serif text-xl font-black text-[#123D2C]">Laboratory Units</h2>
-        </div>
-
-        <div className="space-y-3 text-[10.5px] text-[#171917]/85">
-          <div className="bg-[#123D2C]/5 p-2.5 rounded-lg border border-[#123D2C]/10">
-            <span className="font-bold text-[#123D2C] block">Unit I: Linear Structures</span>
-            <p className="text-[9.5px] text-[#171917]/70 mt-1">
-              Array representation, insertion, deletion. Dynamic memory allocation with pointers. Linked List ADT: Singly, Doubly, and Circular Linked Lists.
-            </p>
-          </div>
-
-          <div className="bg-[#123D2C]/5 p-2.5 rounded-lg border border-[#123D2C]/10">
-            <span className="font-bold text-[#123D2C] block">Unit II: Stacks & Queues</span>
-            <p className="text-[9.5px] text-[#171917]/70 mt-1">
-              Stack ADT, push/pop operations, infix to postfix conversion, parenthesis balancing. Queue ADT, circular queue, priority queue implementation.
-            </p>
-          </div>
-
-          <div className="bg-[#123D2C]/5 p-2.5 rounded-lg border border-[#123D2C]/10">
-            <span className="font-bold text-[#123D2C] block">Unit III: Trees</span>
-            <p className="text-[9.5px] text-[#171917]/70 mt-1">
-              Binary Tree representations, Tree traversals (Inorder, Preorder, Postorder). Binary Search Tree insertion, search, and deletion operations.
-            </p>
-          </div>
-        </div>
-      </div>
-    ),
-    right: (
-      <div className="space-y-4">
-        <div className="text-center pb-2 border-b border-[#D4C5A9]">
-          <span className="text-[10px] italic font-serif text-[#769A84] block">Evaluation</span>
-          <h2 className="font-serif text-xl font-black text-[#123D2C]">Rubrics & Guidelines</h2>
-        </div>
-
-        <div className="space-y-3 text-[10.5px] text-[#171917]/85">
-          <div className="bg-[#123D2C]/5 p-2.5 rounded-lg border border-[#123D2C]/10">
-            <span className="font-bold text-[#123D2C] block">Unit IV: Graphs & Minimum Spanning Trees</span>
-            <p className="text-[9.5px] text-[#171917]/70 mt-1">
-              Graph representation: Adjacency Matrix and Adjacency List. BFS & DFS traversals. Dijkstra’s Shortest Path algorithm, Kruskal’s & Prim’s MST.
-            </p>
-          </div>
-
-          <div className="bg-[#123D2C]/5 p-2.5 rounded-lg border border-[#123D2C]/10">
-            <span className="font-bold text-[#123D2C] block">Unit V: Sorting & Searching</span>
-            <p className="text-[9.5px] text-[#171917]/70 mt-1">
-              Linear search, Binary search on sorted arrays. Insertion sort, Merge sort (divide and conquer), and Quick sort with in-place partitioning.
-            </p>
-          </div>
-
-          <div className="bg-[#769A84]/15 p-2.5 rounded-lg border border-[#769A84]/30 text-center">
-            <span className="font-bold text-[#123D2C] block text-[11px]">Assessment Distribution</span>
-            <p className="text-[9.5px] text-[#171917]/80 mt-1">
-              Continuous Assessment: 60% &nbsp;|&nbsp; End Semester Lab Examination: 40%
-            </p>
-          </div>
-        </div>
-      </div>
-    ),
+    id: 'exp-02',
+    number: 'EXPERIMENT 02',
+    title: 'LINKED LIST',
+    shortDesc: 'Dynamic node allocation and pointer linking to implement a flexible List Abstract Data Type.',
+    topics: [
+      'Linked List Implementation of List ADT.',
+    ],
+    icon: Layers,
+  },
+  {
+    id: 'exp-03',
+    number: 'EXPERIMENT 03',
+    title: 'IMPLEMENTATION OF STACK',
+    shortDesc: 'Design and verification of Last-In-First-Out (LIFO) stack operations across array and linked models.',
+    topics: [
+      'Stack using Arrays.',
+      'Stack using Linked List.',
+    ],
+    icon: Layers,
+  },
+  {
+    id: 'exp-04',
+    number: 'EXPERIMENT 04',
+    title: 'BALANCED PARENTHESES',
+    shortDesc: 'Expression parsing and delimiter matching verification using Array implementation of Stack.',
+    topics: [
+      'Checking Balanced Parentheses using Array implementation of Stack.',
+    ],
+    icon: Target,
+  },
+  {
+    id: 'exp-05',
+    number: 'EXPERIMENT 05',
+    title: 'IMPLEMENTATION OF QUEUE',
+    shortDesc: 'First-In-First-Out (FIFO) queue buffers implementing front/rear pointers and circular index wraps.',
+    topics: [
+      'Queue using Arrays.',
+      'Queue using Linked List.',
+    ],
+    icon: Cpu,
+  },
+  {
+    id: 'exp-06',
+    number: 'EXPERIMENT 06',
+    title: 'BINARY SEARCH TREES',
+    shortDesc: 'Hierarchical node structuring, recursive binary search ordering, and traversal algorithms.',
+    topics: [
+      'Binary Search Trees implementation.',
+    ],
+    icon: BookOpen,
+  },
+  {
+    id: 'exp-07',
+    number: 'EXPERIMENT 07',
+    title: "DIJKSTRA'S ALGORITHM",
+    shortDesc: 'Single-source shortest path computation on weighted directed graphs using greedy relaxation.',
+    topics: [
+      "Implementation of Dijkstra's Algorithm.",
+    ],
+    icon: Zap,
+  },
+  {
+    id: 'exp-08',
+    number: 'EXPERIMENT 08',
+    title: 'MINIMUM SPANNING TREE',
+    shortDesc: 'Greedy algorithms connecting graph vertices with minimal cumulative weight without introducing cycles.',
+    topics: [
+      "Kruskal's Algorithm.",
+      "Prim's Algorithm.",
+    ],
+    icon: Sparkles,
+  },
+  {
+    id: 'exp-09',
+    number: 'EXPERIMENT 09',
+    title: 'SORTING ALGORITHMS',
+    shortDesc: 'Comparative implementations and runtime complexity analysis of essential sorting strategies.',
+    topics: [
+      'Insertion Sort.',
+      'Merge Sort.',
+      'Quick Sort.',
+    ],
+    icon: Terminal,
   },
 ]
 
 export default function SyllabusPage() {
   const navigate = useNavigate()
-  const [currentPageIndex, setCurrentPageIndex] = useState(0)
+  const { user } = useAuth()
+  const heroRef = useRef<HTMLDivElement>(null)
 
-  const currentPage = syllabusPages[currentPageIndex]
+  // Fluid mouse tracking for gentle 3D parallax on the hero visual
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  const springX = useSpring(mouseX, { stiffness: 45, damping: 20 })
+  const springY = useSpring(mouseY, { stiffness: 45, damping: 20 })
+
+  const rotateY = useTransform(springX, [-0.5, 0.5], [6, -6])
+  const rotateX = useTransform(springY, [-0.5, 0.5], [-5, 5])
+
+  useEffect(() => {
+    const handleMove = (e: MouseEvent) => {
+      if (!heroRef.current) return
+      const rect = heroRef.current.getBoundingClientRect()
+      const x = (e.clientX - rect.left) / rect.width - 0.5
+      const y = (e.clientY - rect.top) / rect.height - 0.5
+      mouseX.set(x)
+      mouseY.set(y)
+    }
+    window.addEventListener('mousemove', handleMove)
+    return () => window.removeEventListener('mousemove', handleMove)
+  }, [mouseX, mouseY])
+
+  const handleStartVirtualLab = () => {
+    if (user) {
+      navigate('/dashboard')
+    } else {
+      navigate('/login?redirect=/dashboard')
+    }
+  }
+
+  const handleViewExperiment = (expId: string) => {
+    if (user) {
+      navigate(`/dashboard?exp=${expId}`)
+    } else {
+      navigate(`/login?redirect=/dashboard?exp=${expId}`)
+    }
+  }
 
   return (
-    <div className="min-h-screen bg-[#F8F7F2] text-[#171917] pt-20 pb-12 selection:bg-[#B8E8D0]/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-12 gap-8 items-center min-h-[calc(100vh-6rem)]">
+    <div className="page-transition min-h-screen bg-[#F7F6F0] text-[#171917] flex flex-col justify-between selection:bg-[#A8E6CF]/50 selection:text-[#063D2E] overflow-x-hidden pt-16">
+      {/* =========================================================================
+          HERO SECTION — FULL-BLEED CONTINUOUS 3D ENVIRONMENT (NO CARD, NO BOX)
+          ========================================================================= */}
+      <section
+        ref={heroRef}
+        className="relative overflow-hidden pt-12 pb-14 sm:pt-16 sm:pb-20 border-b border-[#E8EAE4]"
+      >
+        {/* Full-Bleed Environment Background (Matching Image 2 Reference) */}
+        <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none">
+          {/* Flowing Emerald Environment Image covering the hero */}
+          <div
+            className="absolute -inset-4 bg-cover"
+            style={{
+              backgroundImage: `url('/images/syllabus-hero-bg.jpg')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'right 25% center',
+              opacity: 0.96,
+            }}
+          />
 
-          {/* LEFT SIDEBAR: Typography, Quote, Button & Stacked Books (matching Image 1) */}
-          <div className="lg:col-span-4 flex flex-col justify-between py-6">
-            <div>
-              {/* Header Tagline */}
-              <div className="flex items-center gap-3 mb-4">
-                <div className="h-[1px] w-8 bg-[#769A84]/60" />
-                <span className="text-[11px] font-semibold tracking-[0.25em] text-[#171917]/70 uppercase">
-                  Learn  •  Practice  •  Master
+          {/* Smooth Horizontal Ivory Gradient: ensures pristine text readability on the left while flowing seamlessly into the emerald background on the right */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to right, #F7F6F0 0%, #F7F6F0 32%, rgba(247,246,240,0.92) 50%, rgba(247,246,240,0.35) 72%, transparent 100%)',
+            }}
+          />
+
+          {/* Soft top & bottom atmospheric fades into the page background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#F7F6F0]/40 via-transparent to-[#F7F6F0]" />
+
+          {/* Emerald & Mint Ambient Glow Reflections */}
+          <div className="absolute right-[12%] top-[14%] w-[380px] h-[320px] bg-[#A8E6CF]/30 blur-[100px] rounded-full" />
+          <div className="absolute left-[10%] bottom-[10%] w-[340px] h-[200px] bg-[#A8E6CF]/25 blur-[100px] rounded-full" />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            {/* Left Column: Heading & Content (Preserved Exactly) */}
+            <motion.div
+              className="lg:col-span-7 flex flex-col justify-center text-center lg:text-left z-10"
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {/* Top Tagline: —— DSA LEARNING CURRICULUM —— */}
+              <div className="flex items-center justify-center lg:justify-start gap-4 mb-3 sm:mb-4">
+                <div className="h-[1px] w-10 sm:w-16 bg-[#0B513B]/35" />
+                <span className="font-sans text-[11px] sm:text-[12px] font-semibold tracking-[0.34em] text-[#063D2E]/80 uppercase">
+                  DSA Learning Curriculum
                 </span>
-                <div className="h-[1px] w-8 bg-[#769A84]/60" />
+                <div className="h-[1px] w-10 sm:w-16 bg-[#0B513B]/35" />
               </div>
 
-              {/* DSA LAB Title */}
-              <div className="relative mb-4">
-                <h1 className="font-serif leading-[0.88] select-none">
-                  <span className="block text-7xl sm:text-8xl font-black text-[#123D2C]">
-                    DSA
+              {/* Main Heading: Data Structures Laboratory */}
+              <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#063D2E] tracking-tight leading-[1.12] mb-3">
+                Data Structures <br />
+                <span
+                  className="font-display italic text-[#0B513B] font-medium text-4xl sm:text-5xl lg:text-[3.8rem]"
+                  style={{ fontFamily: '"Cormorant Garamond", Georgia, serif' }}
+                >
+                  Laboratory
+                </span>
+              </h1>
+
+              {/* Course Subtitle */}
+              <p className="font-sans text-xs sm:text-sm font-semibold tracking-wider text-[#0B513B]/80 uppercase mb-4">
+                N21UIT307 • Common to CSE, IT, AIDS, CSD, AIML, IoT &amp; Cyber Security
+              </p>
+
+              {/* Description */}
+              <p className="text-sm sm:text-base text-[#171917]/75 leading-relaxed font-sans max-w-xl mb-6 mx-auto lg:mx-0">
+                Explore practical data structures and algorithms through structured programming experiments and hands-on learning.
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                <motion.button
+                  onClick={handleStartVirtualLab}
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#063D2E] via-[#0B513B] to-[#063D2E] text-white px-7 py-3.5 rounded-full font-serif font-bold text-sm tracking-wide transition-all duration-300 shadow-[0_12px_28px_-4px_rgba(6,61,46,0.32)] hover:shadow-[0_16px_36px_-4px_rgba(6,61,46,0.45)] cursor-pointer"
+                >
+                  <span>Start Virtual Lab</span>
+                  <span className="w-7 h-7 rounded-full bg-[#0B513B]/70 border border-[#A8E6CF]/50 flex items-center justify-center text-[#A8E6CF] group-hover:bg-[#A8E6CF] group-hover:text-[#063D2E] transition-all duration-300 shadow-sm">
+                    <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
                   </span>
-                  <div className="relative inline-block">
-                    <span className="text-7xl sm:text-8xl font-black text-[#123D2C]">
-                      LAB
-                    </span>
-                    {/* Swooping Arc SVG */}
-                    <svg
-                      className="absolute -top-4 -right-12 w-28 h-28 pointer-events-none"
-                      viewBox="0 0 100 100"
-                      fill="none"
-                    >
-                      <path
-                        d="M -30 70 C 10 90, 60 70, 85 20"
-                        stroke="#123D2C"
-                        strokeWidth="3.5"
-                        fill="none"
-                      />
-                    </svg>
-                  </div>
-                </h1>
-              </div>
+                </motion.button>
 
-              {/* Quote from Image 1 */}
-              <div className="my-6">
-                <p className="font-serif italic text-2xl text-[#171917]/90 leading-snug">
-                  “Build Your Logic,<br />Shape Your Future”
-                </p>
+                <a
+                  href="#experiments-list"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-[#063D2E]/20 text-[#063D2E] text-xs sm:text-sm font-semibold hover:bg-[#063D2E]/5 transition-all duration-200"
+                >
+                  <span>View All 9 Experiments</span>
+                  <ArrowRight size={14} className="text-[#0B513B]" />
+                </a>
               </div>
+            </motion.div>
 
-              {/* Start Virtual Lab Button from Image 1 */}
-              <button
-                onClick={() => navigate('/labs')}
-                className="group inline-flex items-center gap-3 bg-[#123D2C] hover:bg-[#1A4F3A] text-white px-7 py-3.5 rounded-full font-serif font-bold text-base transition-all duration-300 shadow-xl hover:-translate-y-0.5"
+            {/* Right Column: Full-Bleed Floating Solid 3D Objects (NO CARD, NO BOX, NO BORDER) */}
+            <motion.div
+              className="lg:col-span-5 relative flex items-center justify-center select-none py-6 lg:py-0"
+              initial={{ opacity: 0, scale: 0.94, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {/* Interactive Floating 3D Stage with Gentle Mouse Parallax Tilt */}
+              <motion.div
+                className="relative w-full max-w-lg sm:max-w-xl flex items-center justify-center select-none"
                 style={{
-                  boxShadow: '0 10px 25px -4px rgba(18, 61, 44, 0.4), 0 0 15px rgba(184, 232, 208, 0.25)',
+                  perspective: 1200,
+                  rotateY,
+                  rotateX,
+                  transformStyle: 'preserve-3d',
                 }}
+                animate={{ y: [-5, 6, -5] }}
+                transition={{ duration: 7, ease: 'easeInOut', repeat: Infinity }}
               >
-                <span>Start Virtual Lab</span>
-                <span className="w-7 h-7 rounded-full bg-[#769A84]/40 border border-[#B8E8D0]/50 flex items-center justify-center group-hover:bg-[#B8E8D0] group-hover:text-[#123D2C] transition-colors">
-                  <ChevronRight size={16} />
-                </span>
-              </button>
-            </div>
+                {/* Soft Contact Shadow & Emerald Reflections directly underneath the objects */}
+                <div className="pointer-events-none absolute -bottom-6 left-1/4 w-3/5 h-12 bg-[#063D2E]/18 blur-2xl rounded-full" />
+                <div className="pointer-events-none absolute -bottom-3 left-1/3 w-2/5 h-8 bg-[#A8E6CF]/40 blur-xl rounded-full" />
 
-            {/* Bottom Left: Stack of 3 Physical Books (from Image 1) */}
-            <div className="mt-12 pt-6">
-              <div className="space-y-1.5 max-w-[220px]">
-                {/* Book 1 */}
-                <div className="h-8 bg-[#1B3E30] text-white/90 font-serif text-xs font-semibold px-4 flex items-center rounded-r-md border-l-4 border-l-[#B8E8D0] shadow-md transform -rotate-1 hover:translate-x-1 transition-transform">
-                  <span>Algorithms</span>
-                </div>
-                {/* Book 2 */}
-                <div className="h-8 bg-[#123D2C] text-white/90 font-serif text-xs font-semibold px-4 flex items-center rounded-r-md border-l-4 border-l-[#769A84] shadow-md transform rotate-1 hover:translate-x-1 transition-transform">
-                  <span>Data Structures</span>
-                </div>
-                {/* Book 3 */}
-                <div className="h-8 bg-[#0D261C] text-white/90 font-serif text-xs font-semibold px-4 flex items-center rounded-r-md border-l-4 border-l-[#B8E8D0] shadow-md hover:translate-x-1 transition-transform">
-                  <span>Problem Solving</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT SIDE: Open Textbook on Glowing Pedestal (Image 1) */}
-          <div className="lg:col-span-8 relative flex flex-col items-center">
-
-            {/* Floating Tech Icons surrounding Open Book (from Image 1) with Smooth Physics Float */}
-            <motion.div
-              className="absolute -top-4 right-8 w-11 h-11 rounded-xl bg-[#0F261C] border border-[#B8E8D0]/40 flex items-center justify-center text-[#B8E8D0] shadow-lg"
-              animate={{ y: [-4, 5, -4], rotate: [-2, 2, -2] }}
-              transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <Code2 size={20} />
-            </motion.div>
-
-            <motion.div
-              className="absolute top-28 -right-3 w-11 h-11 rounded-xl bg-[#0F261C] border border-[#B8E8D0]/40 flex items-center justify-center text-[#B8E8D0] shadow-lg"
-              animate={{ y: [4, -5, 4], rotate: [2, -2, 2] }}
-              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-            >
-              <Network size={20} />
-            </motion.div>
-
-            <motion.div
-              className="absolute bottom-16 -left-4 w-12 h-12 rounded-xl bg-[#0F261C] border border-[#B8E8D0]/40 flex items-center justify-center text-[#B8E8D0] shadow-lg"
-              animate={{ y: [-5, 4, -5], rotate: [-1, 2, -1] }}
-              transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-            >
-              <Database size={22} />
-            </motion.div>
-
-            {/* OPEN BOOK CONTAINER with Realistic Physical Hardcover & Two Pages */}
-            <div className="relative w-full max-w-3xl rounded-3xl p-3 sm:p-5 bg-gradient-to-b from-[#0F2D20] to-[#0A1F16] shadow-2xl border border-[#769A84]/40" style={{ perspective: 1200 }}>
-
-              {/* Book Spine Center Shadow & Curvature */}
-              <div className="relative bg-[#F4EBDD] rounded-2xl overflow-hidden shadow-inner border border-[#D4C5A9]">
-                <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#CBB99B]/70 min-h-[480px]">
-
-                  {/* Left Page */}
-                  <div className="p-6 sm:p-7 bg-[#F7F2E7]/80 relative" style={{ perspective: 800 }}>
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={`left-${currentPageIndex}`}
-                        initial={{ opacity: 0, rotateY: 10, x: -8 }}
-                        animate={{ opacity: 1, rotateY: 0, x: 0 }}
-                        exit={{ opacity: 0, rotateY: -10, x: 8 }}
-                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                        style={{ transformOrigin: 'right center' }}
-                      >
-                        {currentPage.left}
-                      </motion.div>
-                    </AnimatePresence>
-
-                    {/* Page Number */}
-                    <div className="absolute bottom-2 left-6 text-[10px] font-serif text-[#769A84]">
-                      Page {currentPageIndex * 2 + 1}
-                    </div>
-                  </div>
-
-                  {/* Right Page */}
-                  <div className="p-6 sm:p-7 bg-[#F4EBDD] relative" style={{ perspective: 800 }}>
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={`right-${currentPageIndex}`}
-                        initial={{ opacity: 0, rotateY: -10, x: 8 }}
-                        animate={{ opacity: 1, rotateY: 0, x: 0 }}
-                        exit={{ opacity: 0, rotateY: 10, x: -8 }}
-                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                        style={{ transformOrigin: 'left center' }}
-                      >
-                        {currentPage.right}
-                      </motion.div>
-                    </AnimatePresence>
-
-                    {/* Page Number */}
-                    <div className="absolute bottom-2 right-6 text-[10px] font-serif text-[#769A84]">
-                      Page {currentPageIndex * 2 + 2}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Natural Spine Binding Shadow in the middle */}
-                <div
-                  className="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-4 pointer-events-none"
-                  style={{
-                    background: 'linear-gradient(90deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.02) 40%, rgba(0,0,0,0.15) 100%)',
-                  }}
+                {/* Pure Solid Emerald 3D Data Structure Objects (Isolated PNG from Image 1) */}
+                <img
+                  src="/images/dsa-3d-objects.png"
+                  alt="Solid Emerald 3D Data Structures - Interconnected Nodes, Binary Tree, Platform, and Glass Cubes"
+                  className="w-full max-w-[460px] sm:max-w-[520px] lg:max-w-[560px] h-auto object-contain drop-shadow-[0_24px_38px_rgba(6,61,46,0.22)] select-none pointer-events-none hover:scale-[1.02] transition-transform duration-500"
                 />
-              </div>
-
-              {/* PEDESTAL LIGHT BASE UNDER THE BOOK (matching Image 1) */}
-              <div className="relative -mt-1 mx-auto w-4/5 h-8 flex items-center justify-center">
-                <motion.div
-                  className="w-full h-3 rounded-full bg-[#B8E8D0] blur-sm"
-                  animate={{ opacity: [0.65, 0.95, 0.65], scale: [0.98, 1.02, 0.98] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                  style={{ boxShadow: '0 0 25px #B8E8D0, 0 0 50px rgba(184, 232, 208, 0.5)' }}
-                />
-                <div className="absolute inset-0 border border-[#B8E8D0]/60 rounded-full bg-gradient-to-r from-transparent via-[#123D2C] to-transparent h-4" />
-              </div>
-            </div>
-
-            {/* Page Flipping Navigation Controls */}
-            <div className="flex items-center gap-6 mt-6">
-              <motion.button
-                onClick={() => setCurrentPageIndex(p => Math.max(0, p - 1))}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                disabled={currentPageIndex === 0}
-                className="flex items-center gap-2 text-xs font-semibold text-[#123D2C] bg-white border border-[#D9E1D9] hover:border-[#123D2C] px-5 py-2.5 rounded-full disabled:opacity-30 disabled:pointer-events-none transition-all shadow-sm cursor-pointer"
-              >
-                <ChevronLeft size={16} /> Previous
-              </motion.button>
-
-              <div className="flex gap-2">
-                {syllabusPages.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentPageIndex(i)}
-                    className={`w-2.5 h-2.5 rounded-full transition-all cursor-pointer ${
-                      i === currentPageIndex ? 'bg-[#123D2C] scale-125' : 'bg-[#769A84]/40 hover:bg-[#769A84]'
-                    }`}
-                  />
-                ))}
-              </div>
-
-              <motion.button
-                onClick={() => setCurrentPageIndex(p => Math.min(syllabusPages.length - 1, p + 1))}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                disabled={currentPageIndex === syllabusPages.length - 1}
-                className="flex items-center gap-2 text-xs font-semibold text-[#123D2C] bg-white border border-[#D9E1D9] hover:border-[#123D2C] px-5 py-2.5 rounded-full disabled:opacity-30 disabled:pointer-events-none transition-all shadow-sm cursor-pointer"
-              >
-                Next <ChevronRight size={16} />
-              </motion.button>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* =========================================================================
+          EXPERIMENTS SECTION — EXACTLY 9 CARDS MATCHING HOME / ABOUT STYLING
+          ========================================================================= */}
+      <section id="experiments-list" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="flex items-center justify-center gap-4 mb-3">
+            <div className="h-[1px] w-12 bg-[#0B513B]/35" />
+            <span className="font-sans text-xs font-semibold tracking-[0.3em] text-[#063D2E]/80 uppercase">
+              List of Experiments
+            </span>
+            <div className="h-[1px] w-12 bg-[#0B513B]/35" />
+          </div>
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#063D2E] tracking-tight">
+            Data Structures Laboratory
+          </h2>
+          <p className="mt-3 text-xs sm:text-sm text-[#171917]/70 font-sans max-w-lg mx-auto">
+            Official laboratory experiments prescribed under curriculum regulation N21UIT307.
+          </p>
+        </div>
+
+        {/* 9 Experiment Cards Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+          {experiments.map((exp, idx) => {
+            const Icon = exp.icon
+
+            return (
+              <motion.div
+                key={exp.id}
+                className="group relative bg-[#F7F6F0]/95 backdrop-blur-md rounded-3xl border border-[#E8EAE4] p-6 sm:p-7 shadow-[0_12px_36px_-6px_rgba(6,61,46,0.08)] hover:shadow-[0_20px_45px_-6px_rgba(6,61,46,0.15)] hover:border-[#063D2E]/35 transition-all duration-400 flex flex-col justify-between overflow-hidden"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.6, delay: idx * 0.05, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {/* Soft Spotlight Glow on Hover */}
+                <div className="pointer-events-none absolute -right-10 -top-10 w-36 h-36 bg-[#A8E6CF]/20 blur-2xl rounded-full group-hover:scale-125 transition-transform duration-500" />
+
+                <div>
+                  {/* Top Bar: 3D Custom Emerald Icon & Experiment Number Badge */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 shrink-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                      <img
+                        src={EXP_3D_ICONS[exp.id]}
+                        alt={exp.title}
+                        className="w-full h-full object-contain filter drop-shadow-[0_2px_5px_rgba(6,61,46,0.18)]"
+                        loading="lazy"
+                      />
+                    </div>
+                    <span className="font-sans text-[11px] font-bold tracking-widest uppercase px-3 py-1 bg-[#A8E6CF]/30 text-[#063D2E] rounded-full border border-[#063D2E]/15">
+                      {exp.number}
+                    </span>
+                  </div>
+
+                  {/* Experiment Title */}
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#063D2E] tracking-tight mb-2.5 group-hover:text-[#0B513B] transition-colors">
+                    {exp.title}
+                  </h3>
+
+                  {/* Short Description */}
+                  <p className="text-xs sm:text-sm text-[#171917]/75 leading-relaxed font-sans mb-4">
+                    {exp.shortDesc}
+                  </p>
+
+                  {/* Topics List with Checkmarks */}
+                  <div className="pt-3 border-t border-[#E8EAE4] mb-6">
+                    <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-[#063D2E]/70 block mb-2">
+                      Syllabus Topics
+                    </span>
+                    <ul className="space-y-2 text-xs sm:text-sm text-[#063D2E]/90">
+                      {exp.topics.map((topic, i) => (
+                        <li key={i} className="flex items-start gap-2.5">
+                          <CheckCircle2 size={15} className="text-[#0B513B] mt-0.5 shrink-0" />
+                          <span className="leading-snug">{topic}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* View Experiment Button (Same Button Style as Home / About) */}
+                <motion.button
+                  onClick={() => handleViewExperiment(exp.id)}
+                  whileHover={{ scale: 1.015, y: -2 }}
+                  whileTap={{ scale: 0.985 }}
+                  className="w-full py-3 px-4 rounded-xl bg-[#063D2E] hover:bg-[#0B513B] text-white font-serif font-bold text-xs sm:text-sm tracking-wide transition-all duration-300 shadow-sm hover:shadow-md flex items-center justify-between cursor-pointer group/btn"
+                >
+                  <span>View Experiment</span>
+                  <span className="w-6 h-6 rounded-full bg-[#0B513B]/80 flex items-center justify-center text-[#A8E6CF] group-hover/btn:bg-[#A8E6CF] group-hover/btn:text-[#063D2E] transition-all">
+                    <ArrowRight size={13} className="group-hover/btn:translate-x-0.5 transition-transform" />
+                  </span>
+                </motion.button>
+              </motion.div>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* =========================================================================
+          BOTTOM SECTION — CALL TO ACTION (MATCHING HOME & ABOUT DESIGN LANGUAGE)
+          ========================================================================= */}
+      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <motion.div
+          className="relative rounded-3xl bg-gradient-to-r from-[#063D2E] via-[#0B513B] to-[#063D2E] p-8 sm:p-12 md:p-16 text-white shadow-[0_20px_50px_-10px_rgba(6,61,46,0.35)] overflow-hidden border border-[#A8E6CF]/25 text-center flex flex-col items-center justify-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {/* Subtle Ambient Glows */}
+          <div className="pointer-events-none absolute -top-24 -left-24 w-80 h-80 bg-[#A8E6CF]/15 rounded-full blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 -right-24 w-80 h-80 bg-[#A8E6CF]/15 rounded-full blur-3xl" />
+
+          {/* Heading */}
+          <h2 className="relative z-10 font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
+            Ready to Practice Data Structures?
+          </h2>
+
+          {/* Description */}
+          <p className="relative z-10 text-white/80 text-sm sm:text-base max-w-2xl leading-relaxed mb-8 font-sans">
+            Explore the experiments and improve your programming skills through practical learning.
+          </p>
+
+          {/* Start Virtual Lab Button */}
+          <motion.button
+            onClick={handleStartVirtualLab}
+            whileHover={{ scale: 1.03, y: -2 }}
+            whileTap={{ scale: 0.97 }}
+            className="group relative z-10 inline-flex items-center gap-4 bg-white hover:bg-[#F7F6F0] text-[#063D2E] px-8 sm:px-10 py-4 rounded-full font-serif font-bold text-base sm:text-lg tracking-wide transition-all duration-300 shadow-xl cursor-pointer"
+          >
+            <span>Start Virtual Lab</span>
+            <span className="w-8 h-8 rounded-full bg-[#063D2E] flex items-center justify-center text-[#A8E6CF] group-hover:bg-[#0B513B] transition-all">
+              <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+            </span>
+          </motion.button>
+        </motion.div>
+      </section>
+
+      {/* =========================================================================
+          FOOTER — EXACTLY IDENTICAL TO HOMEPAGE FOOTER
+          ========================================================================= */}
+      <footer className="relative z-10 bg-[#063D2E] text-white py-10 border-t border-[#04241B]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-[#A8E6CF]">
+              <Sparkles size={16} />
+            </div>
+            <div className="font-serif font-bold text-lg tracking-wider">
+              DSA <span className="text-[#A8E6CF] font-display italic">LAB</span>
+            </div>
+          </div>
+          <div className="text-xs text-white/70 text-center md:text-left">
+            N21UIT307 Data Structures Laboratory • Build Your Logic, Shape Your Future
+          </div>
+          <div className="text-xs text-white/45">
+            © 2026 Virtual Learning Platform • All Rights Reserved
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

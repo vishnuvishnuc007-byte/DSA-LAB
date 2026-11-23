@@ -461,3 +461,289 @@ canvas {
 .syllabus-content .mt-4 {
   margin-top: 12px;
 }
+
+/* =========================================================================
+   GLOBAL DARK THEME ENGINE (DSA LAB)
+   ========================================================================= */
+
+html.dark {
+  --bg: #0C1411;
+  --ivory: #101B17;
+  --emerald: #10B981;
+  --forest: #059669;
+  --mint: #34D399;
+  --soft-grey: #22382D;
+  --primary-green: #10B981;
+  --secondary-green: #34D399;
+  --text-dark: #F3F4F6;
+  --book-page: #15241E;
+  --border-color: #22382D;
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #0C1411 !important;
+  color: #D1D5DB !important;
+}
+
+/* Main background surfaces */
+html.dark .bg-\[\#F8F7F2\],
+html.dark .bg-\[\#F7F6F0\],
+html.dark .bg-\[\#FAF9F5\],
+html.dark .bg-\[\#FAF7F0\],
+html.dark .bg-\[\#F5F2EB\],
+html.dark [class*="bg-[#F8F7F2]"],
+html.dark [class*="bg-[#F7F6F0]"],
+html.dark [class*="bg-[#FAF9F5]"] {
+  background-color: #0C1411 !important;
+}
+
+/* Backdrop headers & navbars with transparency */
+html.dark nav[class*="bg-[#F7F6F0]"],
+html.dark header[class*="bg-[#F7F6F0]"] {
+  background-color: rgba(12, 20, 17, 0.92) !important;
+}
+
+/* White cards -> Dark Forest Charcoal cards */
+html.dark .bg-white {
+  background-color: #14221C !important;
+}
+
+html.dark .bg-white\/90,
+html.dark .bg-white\/95 {
+  background-color: rgba(20, 34, 28, 0.95) !important;
+}
+
+html.dark .bg-white\/80 {
+  background-color: rgba(20, 34, 28, 0.85) !important;
+}
+
+/* Subtle inner surfaces & slate tones */
+html.dark .bg-slate-50,
+html.dark .bg-gray-50,
+html.dark .bg-zinc-50 {
+  background-color: #121E19 !important;
+}
+
+html.dark .bg-slate-100,
+html.dark .bg-gray-100 {
+  background-color: #182822 !important;
+}
+
+html.dark .bg-slate-200,
+html.dark .bg-gray-200 {
+  background-color: #20352D !important;
+}
+
+/* Borders */
+html.dark .border-\[\#E8EAE4\],
+html.dark .border-\[\#D9E1D9\],
+html.dark .border-\[\#E2E8F0\],
+html.dark .border-gray-200,
+html.dark .border-slate-200,
+html.dark .border-slate-100,
+html.dark [class*="border-[#E8EAE4]"],
+html.dark [class*="border-[#D9E1D9]"] {
+  border-color: #22382D !important;
+}
+
+html.dark .divide-\[\#E8EAE4\],
+html.dark .divide-\[\#D9E1D9\] > :not([hidden]) ~ :not([hidden]) {
+  border-color: #22382D !important;
+}
+
+/* Headings & dark green text -> Soft Ivory (preserving bg-clip-text gradients) */
+html.dark [class*="text-[#063D2E]"]:not([class*="bg-clip-text"]):not(.text-transparent),
+html.dark [class*="text-[#123D2C]"]:not([class*="bg-clip-text"]):not(.text-transparent),
+html.dark [class*="text-[#171917]"]:not([class*="bg-clip-text"]):not(.text-transparent),
+html.dark [class*="text-[#04241B]"]:not([class*="bg-clip-text"]):not(.text-transparent),
+html.dark [class*="text-primary-green"]:not([class*="bg-clip-text"]):not(.text-transparent),
+html.dark [class*="text-text-dark"]:not([class*="bg-clip-text"]):not(.text-transparent),
+html.dark .text-slate-900,
+html.dark .text-gray-900 {
+  color: #F3F4F6 !important;
+  opacity: 1 !important;
+}
+
+/* Secondary & Accent green text -> Bright Emerald / Mint */
+html.dark [class*="text-[#0B513B]"]:not([class*="bg-clip-text"]):not(.text-transparent),
+html.dark [class*="text-secondary-green"]:not([class*="bg-clip-text"]):not(.text-transparent),
+html.dark .text-emerald-800,
+html.dark .text-emerald-700 {
+  color: #34D399 !important;
+  opacity: 1 !important;
+}
+
+/* Hero Subtitle and Cormorant Garamond Italics */
+html.dark .font-display.italic,
+html.dark [class*="font-display"][class*="italic"] {
+  color: #E8FDF3 !important;
+  text-shadow: 0 0 24px rgba(52, 211, 153, 0.25);
+}
+
+/* Small uppercase tracking labels (e.g. LEARN • PRACTICE • MASTER) */
+html.dark [class*="tracking-[0.34em]"],
+html.dark [class*="tracking-[0.32em]"],
+html.dark [class*="tracking-[0.28em]"] {
+  color: #A8E6CF !important;
+  opacity: 1 !important;
+  text-shadow: 0 0 14px rgba(168, 230, 207, 0.25);
+}
+
+/* Decorative divider lines */
+html.dark [class*="bg-[#0B513B]/"] {
+  background-color: rgba(52, 211, 153, 0.45) !important;
+}
+
+/* Navbar inactive navigation items */
+html.dark nav a:not([class*="bg-[#063D2E]"]):not([class*="bg-[#123D2C]"]):not([class*="bg-[#10B981]"]) {
+  color: #F3F4F6 !important;
+}
+
+html.dark nav a:not([class*="bg-[#063D2E]"]):not([class*="bg-[#123D2C]"]):not([class*="bg-[#10B981]"]) svg {
+  color: #34D399 !important;
+}
+
+html.dark nav a:not([class*="bg-[#063D2E]"]):not([class*="bg-[#123D2C]"]):not([class*="bg-[#10B981]"]):hover {
+  color: #FFFFFF !important;
+  background-color: #22382D !important;
+}
+
+/* Hover text contrast */
+html.dark [class*="hover:text-[#063D2E]"]:hover {
+  color: #34D399 !important;
+}
+html.dark [class*="hover:text-[#0B513B]"]:hover {
+  color: #A8E6CF !important;
+}
+
+/* Syllabus content lists */
+html.dark .syllabus-content .ordered-list li,
+html.dark .syllabus-content .co-item {
+  color: #E2E8F0 !important;
+}
+
+html.dark .syllabus-content .sub-list li {
+  color: #CBD5E1 !important;
+}
+
+html.dark .syllabus-content .co-badge {
+  background: #0E5E47 !important;
+  color: #FFFFFF !important;
+}
+
+/* Slate body & paragraph text */
+html.dark .text-slate-800,
+html.dark .text-gray-800,
+html.dark .text-slate-700,
+html.dark .text-gray-700,
+html.dark [class*="text-slate-700"],
+html.dark [class*="text-gray-700"] {
+  color: #E2E8F0 !important;
+  opacity: 1 !important;
+}
+
+html.dark .text-slate-600,
+html.dark .text-gray-600,
+html.dark [class*="text-slate-600"],
+html.dark [class*="text-gray-600"] {
+  color: #CBD5E1 !important;
+  opacity: 1 !important;
+}
+
+html.dark .text-slate-500,
+html.dark .text-gray-500,
+html.dark [class*="text-slate-500"],
+html.dark [class*="text-gray-500"] {
+  color: #A3B3A9 !important;
+  opacity: 1 !important;
+}
+
+html.dark .text-slate-400,
+html.dark .text-gray-400,
+html.dark [class*="text-slate-400"],
+html.dark [class*="text-gray-400"] {
+  color: #889D91 !important;
+  opacity: 1 !important;
+}
+
+html.dark .text-slate-300,
+html.dark [class*="text-slate-300"] {
+  color: #5F7A6E !important;
+}
+
+/* Inputs, textareas, selects */
+html.dark input:not([type="checkbox"]):not([type="radio"]),
+html.dark textarea,
+html.dark select {
+  background-color: #172721 !important;
+  border-color: #274034 !important;
+  color: #F3F4F6 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748B !important;
+}
+
+/* Glass effect in dark mode */
+html.dark .glass {
+  background: rgba(16, 27, 23, 0.78) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(34, 56, 45, 0.7) !important;
+}
+
+/* Light Pills / Badges in dark mode */
+html.dark .bg-emerald-50 {
+  background-color: rgba(6, 78, 59, 0.35) !important;
+  color: #6EE7B7 !important;
+  border-color: rgba(5, 150, 105, 0.4) !important;
+}
+
+html.dark .bg-sky-50 {
+  background-color: rgba(12, 74, 110, 0.35) !important;
+  color: #7DD3FC !important;
+  border-color: rgba(2, 132, 199, 0.4) !important;
+}
+
+html.dark .bg-amber-50 {
+  background-color: rgba(120, 53, 15, 0.35) !important;
+  color: #FCD34D !important;
+  border-color: rgba(217, 119, 6, 0.4) !important;
+}
+
+html.dark .bg-red-50 {
+  background-color: rgba(127, 29, 29, 0.35) !important;
+  color: #FCA5A5 !important;
+  border-color: rgba(220, 38, 38, 0.4) !important;
+}
+
+/* Code & pre blocks */
+html.dark pre,
+html.dark code {
+  background-color: #0E1814 !important;
+  color: #A8E6CF !important;
+  border-color: #22382D !important;
+}
+
+/* Soft dark shadow enhancements */
+html.dark .shadow-sm,
+html.dark .shadow,
+html.dark .shadow-md,
+html.dark .shadow-lg,
+html.dark .shadow-xl {
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Scrollbar in dark mode */
+html.dark ::-webkit-scrollbar-track {
+  background: #0C1411;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #1B352A;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #25493A;
+}
+

@@ -8,7 +8,13 @@ import LabsPage from './pages/LabsPage'
 import ResourcesPage from './pages/ResourcesPage'
 import AboutPage from './pages/AboutPage'
 import LoginPage from './pages/LoginPage'
+import DashboardPage from './pages/DashboardPage'
+import StudentDashboardPage from './pages/StudentDashboardPage'
+import ExperimentLearningPage from './pages/ExperimentLearningPage'
+import ExperimentTopicsPage from './pages/ExperimentTopicsPage'
+import TopicLearningDashboardPage from './pages/TopicLearningDashboardPage'
 import { AuthProvider } from './contexts/AuthContext'
+import { ThemeProvider } from './contexts/ThemeContext'
 
 interface ErrorBoundaryProps {
   children: ReactNode
@@ -80,26 +86,38 @@ function LoadingFallback() {
 export default function App() {
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <Router>
-          <SmoothScroll>
-            <div className="min-h-screen bg-[#F8F7F2]">
-              <Navbar />
-              <Suspense fallback={<LoadingFallback />}>
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/syllabus" element={<SyllabusPage />} />
-                  <Route path="/labs" element={<LabsPage />} />
-                  <Route path="/resources" element={<ResourcesPage />} />
-                  <Route path="/about" element={<AboutPage />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="*" element={<HomePage />} />
-                </Routes>
-              </Suspense>
-            </div>
-          </SmoothScroll>
-        </Router>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router>
+            <SmoothScroll>
+              <div className="min-h-screen bg-[#F8F7F2] dark:bg-[#0B1310] transition-colors duration-300">
+                <Navbar />
+                <Suspense fallback={<LoadingFallback />}>
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/syllabus" element={<SyllabusPage />} />
+                    <Route path="/labs" element={<LabsPage />} />
+                    <Route path="/resources" element={<ResourcesPage />} />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/dashboard" element={<DashboardPage />} />
+                    <Route path="/student/dashboard" element={<StudentDashboardPage />} />
+                    {/* Three-Level Experiment & Topic Navigation Routes */}
+                    <Route path="/student/experiment/:expId" element={<ExperimentTopicsPage />} />
+                    <Route path="/student/experiment/:expId/topic/:topicId" element={<TopicLearningDashboardPage />} />
+                    <Route path="/student/topic/:topicId" element={<TopicLearningDashboardPage />} />
+                    <Route path="/experiment/:expId" element={<ExperimentTopicsPage />} />
+                    <Route path="/experiment/:expId/topic/:topicId" element={<TopicLearningDashboardPage />} />
+                    {/* Fallback Legacy learning page */}
+                    <Route path="/experiment-learning/:expId" element={<ExperimentLearningPage />} />
+                    <Route path="*" element={<HomePage />} />
+                  </Routes>
+                </Suspense>
+              </div>
+            </SmoothScroll>
+          </Router>
+        </AuthProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   )
 }

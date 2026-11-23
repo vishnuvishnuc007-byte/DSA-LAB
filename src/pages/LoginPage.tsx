@@ -58,15 +58,37 @@ export default function LoginPage() {
         if (error) {
           setError(error.message || 'Invalid email or password.')
         } else {
-          // If staff, go to labs/syllabus; if student, go to labs
-          navigate(role === 'staff' ? '/syllabus' : '/labs')
+          try {
+            localStorage.setItem('dsalab_user_role', role)
+          } catch {}
+          const redirect = searchParams.get('redirect')
+          if (redirect) {
+            navigate(redirect)
+          } else if (role === 'student') {
+            navigate('/student/dashboard')
+          } else {
+            navigate('/dashboard')
+          }
         }
       } else {
         const { error } = await signUp(email, password)
         if (error) {
           setError(error.message || 'Registration failed.')
         } else {
+          try {
+            localStorage.setItem('dsalab_user_role', role)
+          } catch {}
           setSuccess('Account created! Please check your email to verify.')
+          setTimeout(() => {
+            const redirect = searchParams.get('redirect')
+            if (redirect) {
+              navigate(redirect)
+            } else if (role === 'student') {
+              navigate('/student/dashboard')
+            } else {
+              navigate('/dashboard')
+            }
+          }, 1200)
         }
       }
     } catch {

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { useTheme } from '../contexts/ThemeContext'
 
 interface SilverGlossTextProps {
   text: string
@@ -10,6 +11,7 @@ interface SilverGlossTextProps {
 export default function SilverGlossText({ text, className = '', style }: SilverGlossTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isHovered, setIsHovered] = useState(false)
+  const { isDark } = useTheme()
 
   // Spring physics for fluid cursor-following reflection
   const mouseX = useMotionValue(0)
@@ -72,17 +74,30 @@ export default function SilverGlossText({ text, className = '', style }: SilverG
         className="block font-serif font-black tracking-[-0.035em] text-transparent bg-clip-text"
         style={{
           fontFamily: '"Playfair Display", "Cormorant Garamond", Georgia, serif',
-          backgroundImage: `linear-gradient(
-            180deg,
-            #060907 0%,
-            #0B120E 24%,
-            #08241B 45%,
-            #063D2E 62%,
-            #0B513B 82%,
-            #127352 95%,
-            #15855F 100%
-          )`,
-          filter: 'drop-shadow(0 4px 14px rgba(6, 61, 46, 0.22))',
+          backgroundImage: isDark
+            ? `linear-gradient(
+                180deg,
+                #FFFFFF 0%,
+                #E8FDF3 18%,
+                #B8F5DE 38%,
+                #5EEAD4 60%,
+                #2DD4BF 78%,
+                #10B981 92%,
+                #059669 100%
+              )`
+            : `linear-gradient(
+                180deg,
+                #060907 0%,
+                #0B120E 24%,
+                #08241B 45%,
+                #063D2E 62%,
+                #0B513B 82%,
+                #127352 95%,
+                #15855F 100%
+              )`,
+          filter: isDark
+            ? 'drop-shadow(0 4px 24px rgba(52, 211, 153, 0.35)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6))'
+            : 'drop-shadow(0 4px 14px rgba(6, 61, 46, 0.22))',
         }}
       >
         {text}

@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, Play, Code2, BookOpen, FlaskConical, CheckCi
 import { useAuth } from '../contexts/AuthContext'
 
 // DSA Topics data
-const topics = [
+export const topics = [
   {
     id: 'arrays',
     title: 'Arrays',
@@ -859,7 +859,7 @@ function LinkedListViz() {
   )
 }
 
-const vizMap: Record<string, React.FC> = {
+export const vizMap: Record<string, React.FC> = {
   'array': ArrayViz,
   'linked-list': LinkedListViz,
   'stack': StackViz,

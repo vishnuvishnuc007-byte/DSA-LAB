@@ -18,6 +18,7 @@ import {
   BookOpen
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 import SilverGlossText from '../components/SilverGlossText'
 import HeroAmbientParticles from '../components/3d/HeroAmbientParticles'
 
@@ -61,8 +62,17 @@ const learningObjectives = [
 
 export default function HomePage() {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const containerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
+
+  const handleStartVirtualLab = () => {
+    if (user) {
+      navigate('/dashboard')
+    } else {
+      navigate('/login?redirect=/dashboard')
+    }
+  }
 
   // Fluid mouse tracking for organic multi-layer parallax
   const mouseX = useMotionValue(0)
@@ -230,11 +240,11 @@ export default function HomePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.25 }}
               >
-                <div className="h-[1px] w-10 sm:w-16 bg-[#0B513B]/35" />
-                <span className="font-sans text-[11px] sm:text-[12px] font-semibold tracking-[0.34em] text-[#063D2E]/80 uppercase">
+                <div className="h-[1px] w-10 sm:w-16 bg-[#0B513B]/35 dark:bg-[#34D399]/40" />
+                <span className="font-sans text-[11px] sm:text-[12px] font-semibold tracking-[0.34em] text-[#063D2E]/80 dark:text-[#A8E6CF] uppercase">
                   Learn  •  Practice  •  Master
                 </span>
-                <div className="h-[1px] w-10 sm:w-16 bg-[#0B513B]/35" />
+                <div className="h-[1px] w-10 sm:w-16 bg-[#0B513B]/35 dark:bg-[#34D399]/40" />
               </motion.div>
 
               {/* Main Heading: DSA LAB with Glossy Black-to-Emerald Gradient & Silver Glass Cursor Tracking */}
@@ -270,7 +280,7 @@ export default function HomePage() {
                 transition={{ duration: 0.8, delay: 0.55 }}
               >
                 <p
-                  className="font-display italic text-2xl sm:text-3xl lg:text-[2.2rem] text-[#063D2E]/90 tracking-wide font-medium"
+                  className="font-display italic text-2xl sm:text-3xl lg:text-[2.2rem] text-[#063D2E]/90 dark:text-[#F3F4F6] tracking-wide font-medium"
                   style={{ fontFamily: '"Cormorant Garamond", Georgia, serif' }}
                 >
                   — Your Virtual Learning Platform —
@@ -284,7 +294,7 @@ export default function HomePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.65 }}
               >
-                <p className="font-sans text-[11px] sm:text-xs font-semibold tracking-[0.32em] text-[#0B513B]/70 uppercase">
+                <p className="font-sans text-[11px] sm:text-xs font-semibold tracking-[0.32em] text-[#0B513B]/70 dark:text-[#34D399] uppercase">
                   Explore  •  Learn  •  Practice  •  Grow
                 </p>
               </motion.div>
@@ -297,7 +307,7 @@ export default function HomePage() {
                 transition={{ duration: 0.8, delay: 0.75 }}
               >
                 <motion.button
-                  onClick={() => navigate('/labs')}
+                  onClick={handleStartVirtualLab}
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   className="group relative inline-flex items-center gap-4 bg-gradient-to-r from-[#063D2E] via-[#0B513B] to-[#063D2E] text-white px-8 sm:px-10 py-4 sm:py-4.5 rounded-full font-serif font-bold text-base sm:text-lg tracking-wide transition-all duration-400 cursor-pointer overflow-hidden shadow-[0_12px_32px_-4px_rgba(6,61,46,0.38)] hover:shadow-[0_18px_42px_-4px_rgba(6,61,46,0.5),0_0_28px_rgba(168,230,207,0.4)]"
@@ -327,7 +337,7 @@ export default function HomePage() {
                 <div
                   key={item.label}
                   className="flex items-center justify-center gap-3 py-2 px-3 group cursor-pointer transition-transform hover:-translate-y-0.5"
-                  onClick={() => navigate('/labs')}
+                  onClick={handleStartVirtualLab}
                 >
                   <div className="w-8 h-8 rounded-lg bg-[#063D2E]/6 flex items-center justify-center text-[#063D2E] group-hover:bg-[#063D2E] group-hover:text-[#A8E6CF] transition-colors duration-300">
                     <item.icon size={16} />
@@ -382,7 +392,7 @@ export default function HomePage() {
                 {/* Learn More Button */}
                 <div>
                   <motion.button
-                    onClick={() => navigate('/labs')}
+                    onClick={handleStartVirtualLab}
                     whileHover={{ scale: 1.03, y: -2 }}
                     whileTap={{ scale: 0.97 }}
                     className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#063D2E] hover:bg-[#0B513B] text-white text-xs font-semibold tracking-wide transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer"
@@ -572,7 +582,7 @@ export default function HomePage() {
 
               {/* Action Button */}
               <motion.button
-                onClick={() => navigate('/login?role=student')}
+                onClick={() => navigate('/login?role=student&redirect=/dashboard')}
                 whileHover={{ scale: 1.015, y: -2 }}
                 whileTap={{ scale: 0.985 }}
                 className="w-full py-4 rounded-xl bg-[#063D2E] hover:bg-[#0B513B] text-white font-serif font-bold text-base tracking-wide transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center gap-3 cursor-pointer mt-4"
@@ -646,7 +656,7 @@ export default function HomePage() {
 
               {/* Action Button */}
               <motion.button
-                onClick={() => navigate('/login?role=staff')}
+                onClick={() => navigate('/login?role=staff&redirect=/dashboard')}
                 whileHover={{ scale: 1.015, y: -2 }}
                 whileTap={{ scale: 0.985 }}
                 className="w-full py-4 rounded-xl bg-[#063D2E] hover:bg-[#0B513B] text-white font-serif font-bold text-base tracking-wide transition-all duration-300 shadow-md hover:shadow-xl flex items-center justify-center gap-3 cursor-pointer mt-4"

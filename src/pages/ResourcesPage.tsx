@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { Download, ExternalLink, BookOpen, FileText, Code2, HelpCircle, Lightbulb, Database } from 'lucide-react'
 
-const resources = [
+export const resources = [
   {
     category: 'Study Materials',
     icon: BookOpen,
@@ -64,7 +64,7 @@ const resources = [
   },
 ]
 
-const typeColors: Record<string, string> = {
+export const typeColors: Record<string, string> = {
   Book: '#B8E8D0',
   PDF: '#fde68a',
   Notes: '#c7d2fe',
