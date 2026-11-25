@@ -378,7 +378,9 @@ canvas {
   list-style: none;
   padding: 0;
   margin: 0;
-  space-y: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .syllabus-content .list li {
